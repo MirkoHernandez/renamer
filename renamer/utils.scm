@@ -16,7 +16,7 @@
 ;;;; Utils datestamp
 (define* (time-string stat date-format #:optional (modification-or-creation stat:mtime ))
   "Ruturn a datestamp string. STAT is the stat info of a file,
-DATE-FOR" 
+DATE-FORMAT is the format of the resulting string - YYMMDD, YY-MM-DD, etc." 
   (strftime date-format 
 	    (localtime (modification-or-creation stat))))
 
