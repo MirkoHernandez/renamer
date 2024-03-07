@@ -49,7 +49,8 @@ TIME-FUNCTION the function used to generate the datestamp."
 nftw.  OPTIONS are  the command  line options:  month, compact,  short
 determine the datestamp format; ctime and atime the time value used to
 generate the datestamp."
-  (let ((date-format (cond ((option-ref options 'month #f) "%Y-%m")
+  (let ((filename (basename name))
+	(date-format (cond ((option-ref options 'month #f) "%Y-%m")
 			   ((option-ref options 'compact #f) "%Y%m%d")
 			   ((option-ref options 'short #f) "%y%m%d")
 			   (#t "%y-%m-%d")))
@@ -58,7 +59,7 @@ generate the datestamp."
 			     ((option-ref options 'atime #f)
 			      stat:atime)
 			     (#t  stat:mtime))))
-    (add-datestamp name stat date-format time-function)))
+    (add-datestamp filename stat date-format time-function)))
 
 ;;;; Using external programs for renaming.
 (define (rename-pdf name options)
