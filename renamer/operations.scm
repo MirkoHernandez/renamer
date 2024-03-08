@@ -86,7 +86,7 @@ and rename NAME using that data. NAME is the name argument to ntfw."
 	       (title-string (and title (match:substring title  1)))
 	       (author
 		(string-match "Author\nInfoValue: ([^\n]*)*\n" str))
-	       (author-string (and author (match:substring title 1))))
+	       (author-string (and author (match:substring author 1))))
 
 	  (let* ((result 
 		  (if (and title (not (equal? title "untitled")))
