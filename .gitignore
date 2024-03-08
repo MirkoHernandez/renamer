@@ -9,3 +9,5 @@
 /configure~
 /pre-inst-env
 *.go
+/scripts/renamer
+/scripts/.renamer-real
