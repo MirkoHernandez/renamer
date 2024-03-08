@@ -1,0 +1,12 @@
+#!/usr/bin/env bash 
+prefix=@prefix@
+datarootdir=@datarootdir@
+guileversion=@GUILE_EFFECTIVE_VERSION@
+
+export GUILE_LOAD_PATH="${datarootdir}/guile/site/${guileversion}${GUILE_LOAD_PATH:+:}$GUILE_LOAD_PATH"
+export GUILE_LOAD_COMPILED_PATH="${prefix}/lib/guile/${guileversion}/site-ccache${GUILE_LOAD_COMPILED_PATH:+:}$GUILE_COMPILED_LOAD_PATH"
+
+exec -a "$0" ".renamer-real" "$@"
+
+
+ 

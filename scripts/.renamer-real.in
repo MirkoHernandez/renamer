@@ -1,0 +1,6 @@
+#!@GUILE@ --no-auto-compile
+-*- scheme -*-
+!#
+(use-modules (renamer renamer))
+
+(main (command-line))
