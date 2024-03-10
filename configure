@@ -4128,8 +4128,8 @@ which seems to be undefined.  Please make sure it is defined" >&2;}
 
 
   case $ac_file$ac_mode in
-    "scripts/renamer":F) chmod +x bin/renamer ;;
-    "scripts/.renamer-real":F) chmod +x bin/.renamer-real ;;
+    "scripts/renamer":F) chmod +x scripts/renamer ;;
+    "scripts/.renamer-real":F) chmod +x scripts/.renamer-real ;;
     "pre-inst-env":F) chmod +x pre-inst-env ;;
 
   esac
