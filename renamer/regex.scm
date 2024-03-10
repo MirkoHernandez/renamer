@@ -88,13 +88,16 @@
 	(match:substring result 1)
       "")))
 
-(define (make-compiled-regexp-list regexps)
+(define (make-compiled-regexp-list regexps quote-rx?)
   "Replace  a list  of  REGEXPS with  a list  of  compiled regexps.  Also
 display a message indicating the invalid regexp." 
   (filter-map (lambda (r)
 		(let ((regexp  
-		       (false-if-exception 
-			(make-regexp r))))
+		       (false-if-exception
+			(if quote-rx?
+			    (make-regexp  
+			     (regexp-quote r))
+			    (make-regexp r)))))
 		  (if regexp
 		      regexp
 		      (begin  

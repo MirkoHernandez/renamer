@@ -31,14 +31,15 @@ Date Operations:
         --remove-datestamp    remove datestamp. 
 Text Operations:
         --remove-text         remove text. 
-    -w  --whitespace          replace whitespace with the '-'.
+    -w  --whitespace          replace whitespace with the '-' character.
     -p  --remove-punctuation  remove punctuation characters.
-External Operations:
+External Program Operations:
         --pdf                 rename using pdftk (the metadata's title).
         --pdf-author          rename using pdftk (the metadata's title and author).
 General Options:
     -h  --help                Display usage information.
         --no-color            Do not colorize output. 
+        --quote-rx            Quote regular expression characters in filenames.
         --omit-ignores        If there is an omit file, ignore it.
 ")
 
@@ -65,6 +66,7 @@ General Options:
     (whitespace  (single-char #\w) )
    ;; options
     (omit-ignores)
+    (quote-rx)
     (no-color)
     (help  (single-char #\h))))
 
@@ -130,7 +132,7 @@ option that omits the default ignores in %default-ignore-regexp-list."
 (define (rename-files options dir filenames)
   "Execute renaming operations specified in OPTIONS.
 FILENAMES  is the  list  of filenames  or regexps  to  be renamed."
-  (let* ((compiled-regexp-list (make-compiled-regexp-list filenames))
+  (let* ((compiled-regexp-list (make-compiled-regexp-list filenames (option-ref options 'quote-rx #f) ))
 	 (ignored-files (create-ignore-list dir (option-ref options 'omit-ignores #f)))
 	 (transformed-operations (make-transformed-operations options))
 	 (operations (if (> (length transformed-operations) 1)
