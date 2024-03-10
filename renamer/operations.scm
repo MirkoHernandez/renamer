@@ -108,30 +108,30 @@ and rename NAME using that data. NAME is the name argument to ntfw."
 	    result)))))
 
 (define (media-duration name )
- "Use the ffprobe program to get the duration of the file. NAME is the name argument to ntfw." 
-    (let* ((filename (basename name))
-	   (file (canonicalize-path name))
-	   (port (open-input-pipe (string-append "ffprobe -show_data -hide_banner \""
-						 file 
-						 "\" 2>&1 ")))
-	   (str  (get-string-n port 1000)))
-      (close-pipe port)
-      (let ((duration  (string-match ".*Duration: ([0-9:]+).*" str))
-	    (filename-no-extension (get-filename-without-extension filename)) 
-	    (extension (get-extension filename)))
-	(if (and duration
-		 (not (equal? duration "N/A" )))
-	    (string-append
-	     filename-no-extension
-	     "-"
-	     (match:substring duration 1)
-	     extension)
-	    (begin 
-	      filename)))))
+  "Use the ffprobe program to get the duration of the file. NAME is the name argument to ntfw."
+  (let* ((filename (basename name))
+	 (file (canonicalize-path name))
+	 (port (open-input-pipe (string-append "ffprobe -show_data -hide_banner \""
+					       file 
+					       "\" 2>&1 ")))
+	 (str  (get-string-n port 1000)))
+    (close-pipe port)
+    (let ((duration  (string-match ".*Duration: ([0-9:]+).*" str))
+	  (filename-no-extension (get-filename-without-extension filename)) 
+	  (extension (get-extension filename)))
+      (if (and duration
+	       (not (equal? duration "N/A" )))
+	  (string-append
+	   filename-no-extension
+	   "_"
+	   (match:substring duration 1)
+	   extension)
+	  (begin 
+	    filename)))))
 
 ;;;; text operations
 (define (remove-punctuation name)
- "Removes punctuation  characters from NAME. The  punctuation characters
+  "Removes punctuation  characters from NAME. The  punctuation characters
 are included in %invalid-filename-chars-regexp." 
   (let* ((filename (basename name))
 	 (extension (get-extension name))
