@@ -2,7 +2,7 @@
 
 A simple command-line renaming tool written in Guile Scheme. The
 primary consideration in the design is the facility of adding new
-operations. Inspired by Karl Voit's [date2name].
+operations. Inspired by Karl Voit's [date2name](https://github.com/novoid/date2name).
 
 # Features
 
