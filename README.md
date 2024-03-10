@@ -25,49 +25,54 @@ Multiple renaming operations:
 ## Manual
 
 ```console
-git clone https://github.com/MirkoHernandez/renamer
-cd renamer
-./configure
-make
-sudo make install
+$ git clone https://github.com/MirkoHernandez/renamer
+$ cd renamer
+$ ./configure
+$ make
+$ sudo make install
 ```
 
 # Usage
 
-	Usage: 
-	   renamer [options]  filenames.
+```text
+Usage: 
+   renamer [options]  filenames.
 
-	Renamer runs in dry run mode,  use -A  to apply changes.
+Renamer runs in dry run mode,  use -A  to apply changes.
 
-	Find files:
-		-D, --directory           Where to search for files.
-		-r, --recursive           Recursive search.
-	Date Operations:
-		-d, --datestamp           Include date stamp.
-		-c  --compact             use compact datestamp (YYYYMMDD).
-			--month               use datestamp with year and month (YYYYMM).
-			--ctime               use creation time (the modification of the file attributes) for the datestamp.
-			--atime               take last access time for the date stamp. 
-			--remove-datestamp    remove date stamp. 
-	Text Operations:
-        --remove-text         remove text.
-		-w  --whitespace          replace whitespace with the '-' character.
-		-p  --remove-punctuation  remove punctuation characters.
-	External Program Operations:
-		    --pdf                 rename using pdftk (the metadata's title).
-            --pdf-author          rename using pdftk (the metadata's title and author).
-	General Options:
-		-h  --help                Display usage information.
-			--no-color            Do not colorize output.
-			--quote-rx            Quote regular expression characters in filenames.
-			--omit-ignores        If there is an omit file, ignore it.
+Find files:
+	-D, --directory           Where to search for files.
+	-r, --recursive           Recursive search.
+
+Date Operations:
+	-d, --datestamp           Include date stamp.
+	-c  --compact             use compact datestamp (YYYYMMDD).
+		--month               use datestamp with year and month (YYYYMM).
+		--ctime               use creation time (the modification of the file attributes) for the datestamp.
+		--atime               take last access time for the date stamp. 
+		--remove-datestamp    remove date stamp.
+
+Text Operations:
+		--remove-text         remove text.
+	-w  --whitespace          replace whitespace with the '-' character.
+	-p  --remove-punctuation  remove punctuation characters.
+
+External Program Operations:
+		--pdf                 rename using pdftk (the metadata's title).
+		--pdf-author          rename using pdftk (the metadata's title and author).
+General Options:
+	-h  --help                Display usage information.
+		--no-color            Do not colorize output.
+		--quote-rx            Quote regular expression characters in filenames.
+		--omit-ignores        If there is an omit file, ignore it.
+```
 
 # Examples
 
 #### Replace whitespaces and lowercase text.
 
 ```console
-$renamer  -lwA "Songs on Fire Jim Guthrie - All Gone.mkv"
+$ renamer  -lwA "Songs on Fire Jim Guthrie - All Gone.mkv"
 Songs on Fire Jim Guthrie - All Gone.mkv → songs-on-fire-jim-guthrie-all-gone.mkv
 ```
 
