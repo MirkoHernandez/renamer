@@ -35,7 +35,9 @@ Text Operations:
     -p  --remove-punctuation  remove punctuation characters.
 External Program Operations:
         --pdf                 rename using pdftk (the metadata's title).
-        --pdf-author          rename using pdftk (the metadata's title and author).
+        --title               option to add title.
+        --author              option to add author.
+        --pages               option to add pages. 
 General Options:
     -h  --help                Display usage information.
         --no-color            Do not colorize output. 
@@ -52,13 +54,16 @@ General Options:
     (directory (single-char #\D) (value #t))
    ;; datestamp format
     (datestamp (single-char #\d))
-    (duration )
-    (pdf )
-    (pdf-author)
     (compact (single-char #\c))
     (month   (single-char #\m) )
     (ctime)
     (remove-datestamp)
+    (duration )
+   ;; pdf 
+    (pdf)
+    (title)
+    (author)
+    (pages)
    ;; rename operation
     (lowercase (single-char #\l))
     (remove-text  (value #t))
