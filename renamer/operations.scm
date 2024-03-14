@@ -67,10 +67,11 @@ generate the datestamp."
 and rename NAME using that data. NAME is the name argument to ntfw."
   (let* ((filename (basename name))
 	 (extension (get-extension filename))
+	 (filename-no-extension (get-filename-without-extension filename))
 	 (file  (canonicalize-path name))
-	 (pages? (option-ref options '--pages #f))
-	 (author? (option-ref options '--author #f))
-	 (title? (or (option-ref options '--title #f)
+	 (pages? (option-ref options 'pages #f))
+	 (author? (option-ref options 'author #f))
+	 (title? (or (option-ref options 'title #f)
 		     (and (not author?) (not pages?)))))
     
     (if (not (equal? (string-downcase extension) ".pdf"))
@@ -85,14 +86,15 @@ and rename NAME using that data. NAME is the name argument to ntfw."
 		       (str  (get-string-n port 1500)))
 		  (close-pipe port)
 		  str))
-	       (title (string-match "Title\nInfoValue: ([^\n]*)*\n" str))
+	       (title (and title? (string-match "Title\nInfoValue: ([^\n]*)*\n" str)))
 	       (title-string (if title (match:substring title  1)
-			     ""))
-	       (pages (string-match "NumberOfPages: ([^\n]*)*\n" str))
+				 ""))
+	       (pages (and pages? (string-match "NumberOfPages: ([^\n]*)*\n" str)))
 	       (pages-string (if pages (string-append "-" (match:substring pages 1))
 				 ""))
 	       (author
-		(string-match "Author\nInfoValue: ([^\n]*)*\n" str))
+		(and author?
+		     (string-match "Author\nInfoValue: ([^\n]*)*\n" str)))
 	       (author-string (if author
 				  (string-append (if title "-" "")
 						 (match:substring author 1))
@@ -106,10 +108,9 @@ and rename NAME using that data. NAME is the name argument to ntfw."
 					     (not (equal? title-string
 							  "untitled")))
 					title-string
-					(basename filename))
+					filename-no-extension)
 				    author-string
-				    pages-string
-				    )
+				    pages-string)
 		     ;; Remove trailing . and space characters
 		     (char-set #\. #\ )))
 		   ;;extension
