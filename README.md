@@ -50,26 +50,26 @@ Find files:
 Date Operations:
 	-d, --datestamp           Include date stamp.
 	-c  --compact             use compact datestamp (YYYYMMDD).
-		--month               use datestamp with year and month (YYYYMM).
-		--ctime               use creation time (the modification of the file attributes) for the datestamp.
-		--atime               take last access time for the date stamp. 
-		--remove-datestamp    remove date stamp.
+	    --month               use datestamp with year and month (YYYYMM).
+	    --ctime               use creation time (the modification of the file attributes) for the datestamp.
+	    --atime               take last access time for the date stamp. 
+	    --remove-datestamp    remove date stamp.
 
 Text Operations:
-		--remove-text         remove text.
+	    --remove-text         remove text.
 	-w  --whitespace          replace whitespace with the '-' character.
 	-p  --remove-punctuation  remove punctuation characters.
 
 External Program Operations:
-        --pdf                 rename using pdftk (by default the metadata's title).
-        --title               option to add title.
-        --author              option to add author.
-        --pages               option to add pages. 
+	    --pdf                 rename using pdftk (by default the metadata's title).
+	    --title               option to add title.
+	    --author              option to add author.
+	    --pages               option to add pages. 
 General Options:
 	-h  --help                Display usage information.
-		--no-color            Do not colorize output.
-		--quote-rx            Quote regular expression characters in filenames.
-		--omit-ignores        If there is an omit file, ignore it.
+	    --no-color            Do not colorize output.
+	    --quote-rx            Quote regular expression characters in filenames.
+	    --omit-ignores        If there is an omit file, ignore it.
 ```
 
 # Examples
