@@ -34,6 +34,9 @@ $ sudo make install
 
 # Usage
 
+renamer uses regular expressions. To provide a list of literal
+filenames use the quote-rx option.
+
 ```text
 Usage: 
    renamer [options]  filenames.
@@ -58,8 +61,10 @@ Text Operations:
 	-p  --remove-punctuation  remove punctuation characters.
 
 External Program Operations:
-		--pdf                 rename using pdftk (the metadata's title).
-		--pdf-author          rename using pdftk (the metadata's title and author).
+        --pdf                 rename using pdftk (by default the metadata's title).
+        --title               option to add title.
+        --author              option to add author.
+        --pages               option to add pages. 
 General Options:
 	-h  --help                Display usage information.
 		--no-color            Do not colorize output.
@@ -98,24 +103,26 @@ Songs on Fire • Jim Guthrie - All Gone [4G-oaBUD7xE].mkv → Songs on Fire  Ji
 
 #### rename PDF using metadata
 
+The default PDF rename operation is to use the metadata's title.
+
 ```console
 $ renamer --pdf -A elementsdrawing02ruskgoog.pdf 
 elementsdrawing02ruskgoog.pdf   → The Elements of Drawing.pdf
 ```
 #### rename PDF using metadata - title and author.
 
-Also add compact date stamp, replace white spaces and lowercase
-filename.
+The options for PDF renaming are --title --author --pages.
 
 ```console
-$ renamer --pdf-author   -lwcA elementsdrawing02ruskgoog.pdf 
+$ renamer --pdf --title --author   -lwcA elementsdrawing02ruskgoog.pdf 
 elementsdrawing02ruskgoog.pdf   → 20070718--the-elements-of-drawing-john-ruskin.pdf
 ```
 
-#### add duration
+#### Add duration to a media file.
 
 This example requires the --quote-rx option because the filename
-includes common regular expression characters.
+includes characters that are interpreted as part of a regular
+expression.
 
 ```console
 $ renamer --duration --quote-rx -A  "The Magic of Property Testing [4bpc8NpNHRc].webm"
