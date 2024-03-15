@@ -90,7 +90,7 @@ and rename NAME using that data. NAME is the name argument to ntfw."
 	       (title-string (if title (match:substring title  1)
 				 ""))
 	       (pages (and pages? (string-match "NumberOfPages: ([^\n]*)*\n" str)))
-	       (pages-string (if pages (string-append "-" (match:substring pages 1))
+	       (pages-string (if pages (string-append "_" (match:substring pages 1))
 				 ""))
 	       (author
 		(and author?
