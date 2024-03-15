@@ -38,6 +38,7 @@ External Program Operations:
         --title               option to add title.
         --author              option to add author.
         --pages               option to add pages. 
+        --duration            add time duration to a media file.
 General Options:
     -h  --help                Display usage information.
         --no-color            Do not colorize output. 
