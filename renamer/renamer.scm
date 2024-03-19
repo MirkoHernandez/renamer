@@ -80,16 +80,14 @@ General Options:
   "Apply a COMBINED-OPERATION renamer operation using NAME and STAT (from nftw).
 Apply? indicates if the changes are applied." 
   (let* ((filename (basename name))
-	 (new-name (combined-operation name stat))
+	 (new-name (basename (combined-operation name stat)))
 	 (current-dir (dirname name)))
 
     (if no-color?
 	(format #t "~40a → ~a ~%" filename new-name)
 	(format #t "~40a → ~a ~%"
-		(colorize-blue 
-		 filename)
-		(colorize-green
-		 new-name)))
+		(colorize-blue  filename)
+		(colorize-green new-name)))
     (when apply?
       (rename-file
        (canonicalize-path name)
@@ -117,8 +115,9 @@ the changes are applied. NO-COLOR disables colorized output."
 	      (current-dir (dirname name)))
 	  (if (find-regexp filename ignored-files)
 	      (begin
-		(unless (equal? filename ".")
-		  (format #t "Ignoring: ~s~%" filename))
+		;; TODO: debug or verbose mode.
+		;; (unless (equal? filename ".")
+		  ;; (format #t "Ignoring: ~s~%" filename))
 		#t)
 	      (begin
 		(when (find-regexp filename regex-patterns)
