@@ -13,34 +13,50 @@
   #:use-module (renamer operations)
   #:export (main))
 
+(define concise-help-string
+  "Usage: renamer [options] filenames.
+
+ Renamer runs  in dry  run mode, use  -A to apply  changes.
+
+ Use  -h to display the full list of options.
+
+ These are common options:
+    -d, --datestamp           Include datestamp.
+    -w, --whitespace          replace whitespace with the '-' character.
+    -l, --lowercase           lowercase the file name. 
+    -p, --remove-punctuation  remove punctuation characters.
+        --pdf                 rename using pdftk (the metadata's title).
+")
+
 (define help-string
-  "Usage:
-         renamer [options] filenames.
+  "Usage: renamer [options] filenames.
 
 Renamer runs in dry run mode,  use -A to apply changes.
 
-Find files:
+ Find files:
     -D, --directory           Where to search for files.
     -r, --recursive           Recursive search.
-Date Operations:
+ Date Operations [-d | -c --month]: 
+    
     -d, --datestamp           Include datestamp.
-    -c  --compact             use compact datestamp (YYYYMMDD).
+    -c, --compact             use compact datestamp (YYYYMMDD).
         --month               use datestamp with year and month (YYYYMM).
         --ctime               take modification of the file attributes for the datestamp.
         --atime               take last access time for the datestamp. 
         --remove-datestamp    remove datestamp. 
-Text Operations:
+ Text Operations:
         --remove-text         remove text. 
-    -w  --whitespace          replace whitespace with the '-' character.
-    -p  --remove-punctuation  remove punctuation characters.
-External Program Operations:
+    -w, --whitespace          replace whitespace with the '-' character.
+    -l, --lowercase           lowercase the file name. 
+    -p, --remove-punctuation  remove punctuation characters.
+ External Program Operations:
         --pdf                 rename using pdftk (the metadata's title).
         --title               option to add title.
         --author              option to add author.
         --pages               option to add pages. 
         --duration            add time duration to a media file.
-General Options:
-    -h  --help                Display usage information.
+ General Options:
+    -h, --help                Display the full list of options.
         --no-color            Do not colorize output. 
         --quote-rx            Quote regular expression characters in filenames.
         --omit-ignores        If there is an omit file, ignore it.
@@ -158,16 +174,19 @@ Display a help message if no files  argument is provided."
   (let* ((options (getopt-long args option-spec))
 	 (dir (option-ref options 'directory #f))
 	 (files (option-ref options '()  #f)))
-    (if (or (equal? '() files)
-	    (option-ref options 'help #f)
-	    (< (length options) 2))
-	(display help-string)
-	(begin
-	  (if dir
-	      (rename-files options dir files)
-	      (for-each
-	       (lambda (filepattern)
-		 (let ((dir (dirname filepattern))
-		       (file (list (basename filepattern))))
-		   (rename-files options dir file)))
-	       files))))))
+
+    (cond
+     ((option-ref options 'help #f)
+      (display help-string))
+     ((or (equal? '() files)
+	  (< (length options) 2))
+      (display concise-help-string))
+     (else
+      (if dir
+	  (rename-files options dir files)
+	  (for-each
+	   (lambda (filepattern)
+	     (let ((dir (dirname filepattern))
+		   (file (list (basename filepattern))))
+	       (rename-files options dir file)))
+	   files))))))
