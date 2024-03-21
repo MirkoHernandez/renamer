@@ -1,0 +1,14 @@
+# create basic tissue workflow
+
+* tags: documentation
+
+tissue is a very cool and simple issue tracker. Issues can be kept in
+version control and be available from the command line, this way
+decisions, context and non-code related information can be documented
+alongside the project. Additionally issues can be rewritten to better
+reflect the state of the project.
+
+## Possible workflow using tissue.
+
+- create issues about main tasks.
+- ideally create a commit only including the issue.
