@@ -11,3 +11,4 @@
 *.go
 /scripts/renamer
 /scripts/.renamer-real
+.tissue
