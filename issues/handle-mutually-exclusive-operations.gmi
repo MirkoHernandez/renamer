@@ -1,0 +1,7 @@
+# Handle mutually exclusive operations
+
+Some operations should not be combined such as: pdf with media and the
+datestamp operations; currently there is no way to prevent this.
+
+Probably the best place to deal with this is in the operations alist,
+using a data directed approach.
