@@ -129,3 +129,80 @@ expression.
 $ renamer --duration --quote-rx -A  "The Magic of Property Testing [4bpc8NpNHRc].webm"
 The Magic of Property Testing [4bpc8NpNHRc].webm → The Magic of Property Testing [4bpc8NpNHRc]_00:11:57.webm
 ```
+
+# Rofi integration
+
+The following script uses rofi or fzf to select files and renaming
+operations.
+
+NOTE: it is unresponsive when using PDF operations on too many files.
+I haven't figured how to add a loading icon.
+
+```bash
+#!/usr/bin/env bash
+command=(rofi -show -dmenu -i -theme-str 'window{width:100%;}'  -fuzzy -font "hack 9" )
+command_ms=(${command[@]} -multi-select)
+
+if [ "$1" == "fzf" ]; then
+    command=(fzf ) 
+    command_ms=( ${command[@]}  -m)
+fi
+
+# NOTE: all the arrays created in this script use \n as the separator to allow spaces in file names, so IFS is not restored.
+SAVEIFS=$IFS 
+IFS=$'\n'
+# Array of select files
+files=($(rg --files ~/  | ${command_ms[@]}))
+
+if (( ${#files[@]} == 0 )); then
+   exit 0 
+fi
+
+# Renamer options
+declare -A options;
+options[datestamp]="-d" 
+options[compact-datestamp]="-c" 
+options[month]="-m" 
+options[lowercase]="-l"
+options[pdf]="--pdf" 
+options[title]="--title" 
+options[author]="--author" 
+options[pages]="--pages"
+options[duration]="--duration"
+options[replace-whitespace]="-w"
+options[remove-punctuation]="-p"
+
+# Array of select options
+selected_options=($(printf "%s\n" "${!options[@]}" | ${command_ms[@]}))
+
+declare -a flags;
+for i in "${selected_options[@]}"; do
+   flags+=(${options[$i]})
+done
+
+if (( ${#flags[@]} == 0 )); then
+   exit 0 
+fi
+
+# Array of possible changes
+possible_changes=($(renamer "${flags[@]}"  --quote-rx --no-color "${files[@]}" ))
+
+if (( ${#possible_changes[@]} == 0 )); then
+   exit 0 
+fi
+
+# Array of selected changes
+apply_changes=($(printf "%s\n" "${possible_changes[@]}" | ${command_ms[@]} ))
+
+declare -a renamed_files;
+if  (( ${#apply_changes[@]} != 0 )); then
+    for i in "${!possible_changes[@]}"; do
+	if [[ ${apply_changes[@]} =~ ${possible_changes[i]} ]]
+	then
+	    renamed_files+=("${files[$i]}")
+	fi
+    done
+    
+    renamer "${flags[@]}" -A  --quote-rx --no-color "${renamed_files[@]}"
+fi
+```
