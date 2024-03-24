@@ -20,6 +20,8 @@ Multiple renaming operations:
 
 - GNU Guile >= 2.0.11
 
+[Guile Scheme](https://www.gnu.org/software/guile/) 
+
 # Installation
 
 ## Manual
@@ -132,11 +134,11 @@ The Magic of Property Testing [4bpc8NpNHRc].webm → The Magic of Property Testi
 
 # Rofi integration
 
-The following script uses rofi or fzf to select files and renaming
+The following script uses rofi (or fzf using the 'fzf' argument) to select files and renaming
 operations.
 
 NOTE: it is unresponsive when using PDF operations on too many files.
-I haven't figured how to add a loading icon.
+I haven't figured how to add a loading icon to rofi.
 
 ```bash
 #!/usr/bin/env bash
@@ -152,7 +154,7 @@ fi
 SAVEIFS=$IFS 
 IFS=$'\n'
 # Array of select files
-files=($(rg --files ~/  | ${command_ms[@]}))
+files=($(find "$directory" -maxdepth 1 -type f | ${command_ms[@]}))
 
 if (( ${#files[@]} == 0 )); then
    exit 0 
