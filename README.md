@@ -18,9 +18,7 @@ Multiple renaming operations:
 
 # Requirements
 
-- GNU Guile >= 2.0.11
-
-[Guile Scheme](https://www.gnu.org/software/guile/) 
+[Guile Scheme](https://www.gnu.org/software/guile/) 2.2+
 
 # Installation
 
