@@ -148,6 +148,14 @@ if [ "$1" == "fzf" ]; then
     command_ms=( ${command[@]}  -m)
 fi
 
+# Select directory
+directory_list=("$HOME/Downloads"
+		"$HOME/Media"
+		"$HOME/Music"
+		"$HOME/Books")
+		
+directory=$(printf "%s\n" "${directory_list[@]}" | ${command[@]})
+
 # NOTE: all the arrays created in this script use \n as the separator to allow spaces in file names, so IFS is not restored.
 SAVEIFS=$IFS 
 IFS=$'\n'
