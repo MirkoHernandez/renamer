@@ -1,0 +1,4 @@
+# include-ignore-option
+
+Include an option to ignore some files using a regex.
+
