@@ -1,5 +1,7 @@
 # Handle mutually exclusive operations
 
+* tags: bug
+
 Some operations should not be combined such as: pdf with media and the
 datestamp operations; currently there is no way to prevent this.
 

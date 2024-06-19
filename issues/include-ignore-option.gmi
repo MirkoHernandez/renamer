@@ -1,4 +1,7 @@
-# include-ignore-option
+# include ignore option
+
+* tags: feature
 
 Include an option to ignore some files using a regex.
+
 

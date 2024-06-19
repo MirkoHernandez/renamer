@@ -10,5 +10,18 @@ reflect the state of the project.
 
 ## Possible workflow using tissue.
 
-- create issues about main tasks.
-- ideally create a commit only including the issue.
+* create issues about main tasks.
+* ideally create a commit only including the issue.
+* add a resolution entry to some issues.
+
+## Resolution
+
+I think that for a smooth workflow with tissue a little automation of tasks would be nice.
+
+* creating the issue file and title.
+* selecting tags from a controlled vocabulary.
+* maybe automating the assignment of tags.
+* closing issues.
+* maybe automating the git commit as well staging the issue file and creating the commit message.
+
+* closed

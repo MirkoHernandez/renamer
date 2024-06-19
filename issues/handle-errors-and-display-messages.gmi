@@ -5,10 +5,10 @@
 There are some unhandled errors; invalid input can create errors and a
 nasty backtrace is displayed. There should be an error message for each.
 
-- [ ] symlink related error.
-- [ ] canonicalize-path on invalid input.
-- [ ] no input - expecting pair error.
-- [ ] rename-file invalid input.
+* [ ] symlink related error.
+* [ ] canonicalize-path on invalid input.
+* [ ] no input - expecting pair error.
+* [ ] rename-file invalid input.
 
 
 
