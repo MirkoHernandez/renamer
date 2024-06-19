@@ -1,0 +1,6 @@
+# include verbose option
+
+* tags: feature
+
+Include an option to print verbose output.
+
