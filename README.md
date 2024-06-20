@@ -80,7 +80,8 @@ General Options:
 	-h  --help                Display usage information.
 	    --no-color            Do not colorize output.
 	    --quote-rx            Quote regular expression characters in filenames.
-	    --omit-ignores        If there is an omit file, ignore it.
+	i   --ignore-rx           Ignore the files matching a regular expression.
+	    --omit-ignore-files   If there is an ignored file in a directory, omit it.
 ```
 
 # Examples

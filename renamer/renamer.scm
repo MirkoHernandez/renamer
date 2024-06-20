@@ -59,7 +59,8 @@ Renamer runs in dry run mode,  use -A to apply changes.
     -h, --help                Display the full list of options.
         --no-color            Do not colorize output. 
         --quote-rx            Quote regular expression characters in filenames.
-        --omit-ignores        If there is an omit file, ignore it.
+    -i  --ignore-rx           Ignore the files matching a regular expression.
+        --omit-ignore-files   If there is an ignored file in a directory, omit it.
 ")
 
 ;;;;  getopt
@@ -87,7 +88,8 @@ Renamer runs in dry run mode,  use -A to apply changes.
     (remove-punctuation (single-char #\p))
     (whitespace  (single-char #\w) )
    ;; options
-    (omit-ignores)
+    (omit-ignore-files)
+    (ignore-rx (single-char #\i) (value #t))
     (quote-rx)
     (no-color)
     (help  (single-char #\h))))
@@ -132,8 +134,8 @@ the changes are applied. NO-COLOR disables colorized output."
 	  (if (find-regexp filename ignored-files)
 	      (begin
 		;; TODO: debug or verbose mode.
-		;; (unless (equal? filename ".")
-		  ;; (format #t "Ignoring: ~s~%" filename))
+		(unless (equal? filename ".")
+		  (format #t "Ignoring: ~s~%" filename))
 		#t)
 	      (begin
 		(when (find-regexp filename regex-patterns)
@@ -141,20 +143,24 @@ the changes are applied. NO-COLOR disables colorized output."
 	      )
 	  #t))))
 
-(define (create-ignore-list dir omit-default-ignores?)
+(define (create-ignore-list dir omit-default-ignores? ignore-rx)
  "Create a list of regexps of files  to be omitted. DIR is the directory
 in which  the .renamer-ignore  file is  searched. OMIT-DEFAULT?  is an
 option that omits the default ignores in %default-ignore-regexp-list."
 (let ((local-ignores (get-ignore-list-from-dir dir)))
-  (if omit-default-ignores?
-      local-ignores
-      (append local-ignores %default-ignore-regexp-list))))
+  (let ((ignored-files (if ignore-rx  (make-compiled-regexp-list (list ignore-rx) #f) 
+			   '())))
+    (append ignored-files  
+	    (if omit-default-ignores?
+		local-ignores
+		(append local-ignores %default-ignore-regexp-list))))))
 
 (define (rename-files options dir filenames)
   "Execute renaming operations specified in OPTIONS.
 FILENAMES  is the  list  of filenames  or regexps  to  be renamed."
   (let* ((compiled-regexp-list (make-compiled-regexp-list filenames (option-ref options 'quote-rx #f) ))
-	 (ignored-files (create-ignore-list dir (option-ref options 'omit-ignores #f)))
+	 (ignored-files (create-ignore-list dir (option-ref options 'omit-ignore-files #f)
+					    (option-ref options 'ignore-rx #f)))
 	 (transformed-operations (make-transformed-operations options))
 	 (operations (if (> (length transformed-operations) 1)
 			   (apply compose transformed-operations)
@@ -174,7 +180,6 @@ Display a help message if no files  argument is provided."
   (let* ((options (getopt-long args option-spec))
 	 (dir (option-ref options 'directory #f))
 	 (files (option-ref options '()  #f)))
-
     (cond
      ((option-ref options 'help #f)
       (display help-string))
@@ -190,3 +195,5 @@ Display a help message if no files  argument is provided."
 		   (file (list (basename filepattern))))
 	       (rename-files options dir file)))
 	   files))))))
+
+

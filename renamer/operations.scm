@@ -22,7 +22,6 @@
   #:export (make-datestamp-operation
 	    make-rename-operation
 	    make-transformed-operations 
-	    make-nftw-procedure
 	    %operations-alist))
 
 ;;;; Date operations
