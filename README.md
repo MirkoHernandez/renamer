@@ -13,7 +13,7 @@ Multiple renaming operations:
 - Lowercase filename.
 - Remove punctuation characters.
 - Remove arbitrary text using a regular expression.
-- Rename a PDF file using the file's metadata (requires pdftk). 
+- Rename a PDF file using the file's metadata (requires pdftk or stapler). 
 - Add duration time for media file formats (requires ffmpeg). 
 
 # Requirements
@@ -71,7 +71,7 @@ Text Operations:
 	-p  --remove-punctuation  remove punctuation characters.
 
 External Program Operations:
-	    --pdf                 rename using pdftk (by default the metadata's title).
+	    --pdf                 rename using pdftk or stapler (by default the metadata's title).
 	    --title               option to add title.
 	    --author              option to add author.
 	    --pages               option to add pages.
