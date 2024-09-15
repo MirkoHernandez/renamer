@@ -157,18 +157,22 @@ are included in %invalid-filename-chars-regexp."
 
 (define (replace-spaces name)
   "Replace whitespace with the '-' character."
-  (regexp-substitute/global
-   #f
-   ;; replace trailing '-' 
-   "-\\."
-   (regexp-substitute/global #f
-			     ;; replace multiple '-' with a single one.
-			     "-{2,15}" 
-			     (regexp-substitute/global #f
-						       %whitespace-regexp name 
-						       'pre "-" 'post)
-			     'pre "-" 'post)
-   'pre "." 'post))
+  (let ((filename (basename name) ))
+    (regexp-substitute/global
+     #f
+     ;; replace trailing '-' 
+     "-\\."
+     (regexp-substitute/global #f
+			       ;; replace multiple '-' with a single one.
+			       "-{2,15}" 
+			       (regexp-substitute/global #f
+							 %whitespace-regexp
+
+							 (string-trim-both
+							  filename) 
+							 'pre "-" 'post)
+			       'pre "-" 'post)
+     'pre "." 'post)))
 
 (define (remove-text name options)
   "Remove  text from  NAME.  OPTIONS  is the  command  line options,  the
