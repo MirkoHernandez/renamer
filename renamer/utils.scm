@@ -8,7 +8,11 @@
 (define-module (renamer utils)
   #:use-module (ice-9 rdelim) 
   #:use-module (renamer regex)
+  #:use-module (ice-9 popen)
+  #:use-module (ice-9 regex)
+  #:use-module (ice-9 textual-ports) ;;get-string-n
   #:export (get-ignore-list-from-dir
+	    get-pdf-metadata 
 	    add-datestamp
 	    colorize-blue
 	    colorize-green))
@@ -43,3 +47,47 @@ patterns to be ignored."
 	  (make-compiled-regexp-list 
 	   (string-split file-contents #\newline)))
 	'())))
+
+(define (which executable )
+ "Returns true if EXECUTABLE is available " 
+  (if (access? executable X_OK)
+      executable
+      (access? (or (search-path (parse-path (getenv "PATH")) executable)
+		   "")
+	       X_OK)))
+
+(define (get-pdf-metadata file)
+  (cond ((which "stapler")
+	 (let* ((port (open-input-pipe (string-append "stapler info \""
+						      file 
+						      "\"")))
+		;;NOTE: Reading the first 1500  characters should be enough to
+		;; extract the title, author and number of pages.
+		(str  (get-string-n port 1500 ))
+		(s1 (string-match "^.*/Title: ([^\n]*)*\n" str))
+		(s2 (string-match "^.*/Author: ([^\n]*)*\n" str)))
+	   (close-pipe port)
+	   (let ((title (and s1 (match:substring s1 1)))
+		 (author (and s2 (match:substring s2 1))))
+	     (values
+	      title 
+	      author 
+	      #f))))
+	((which "pdftk")
+	 (let* ((port (open-input-pipe (string-append "pdftk  \""
+						      file
+						      "\" dump_data_utf8")))
+		;;NOTE: Reading the first 1500  characters should be enough to
+		;; extract the title, author and number of pages.
+		(str  (get-string-n port 1500 ))
+		(s1 (string-match "Title\nInfoValue: ([^\n]*)*\n" str))
+		(s2 (string-match "Author\nInfoValue: ([^\n]*)*\n"  str))
+		(s3 (string-match "NumberOfPages: ([^\n]*)*\n" str)))
+	   (close-pipe port)
+	   (let ((title (and s1 (match:substring s1 1)))
+		 (author (and s2 (match:substring s2 1)))
+		 (num-pages (and s3 (match:substring s3 1))))
+	     (values
+	      title 
+	      author 
+	      num-pages))))))

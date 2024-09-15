@@ -72,50 +72,28 @@ and rename NAME using that data. NAME is the name argument to ntfw."
 	 (author? (option-ref options 'author #f))
 	 (title? (or (option-ref options 'title #f)
 		     (and (not author?) (not pages?)))))
-    
     (if (not (equal? (string-downcase extension) ".pdf"))
 	filename
-	(let* ((str
-		(let* ((port (open-input-pipe (string-append "pdftk \""
-							     file 
-							     "\" dump_data_utf8")))
-		       
-		       ;;NOTE: Reading the first 1500  characters should be enough to
-		       ;; extract the title, author and number of pages.
-		       (str  (get-string-n port 1500)))
-		  (close-pipe port)
-		  str))
-	       (title (and title? (string-match "Title\nInfoValue: ([^\n]*)*\n" str)))
-	       (title-string (if title (match:substring title  1)
-				 ""))
-	       (pages (and pages? (string-match "NumberOfPages: ([^\n]*)*\n" str)))
-	       (pages-string (if pages (string-append "_" (match:substring pages 1))
-				 ""))
-	       (author
-		(and author?
-		     (string-match "Author\nInfoValue: ([^\n]*)*\n" str)))
-	       (author-string (if author
-				  (string-append (if title "-" "")
-						 (match:substring author 1))
-				  "")))
-	  (let* ((result 
-		  (string-append
-		   (remove-invalid-characters
-		    (string-trim-right
-		     ;;title, author, pages
-		     (string-append (if (and title
-					     (not (equal? title-string
-							  "untitled")))
-					title-string
-					filename-no-extension)
-				    author-string
-				    pages-string)
-		     ;; Remove trailing . and space characters
-		     (char-set #\. #\ )))
-		   ;;extension
-		   extension)
-		  ))
-	    result)))))
+	(call-with-values
+	    (lambda ()
+	      (get-pdf-metadata file)) 
+	  (lambda (title author pages)
+	    (string-append
+	     (remove-invalid-characters
+	      (string-trim-right
+	       ;;title, author, pages
+	       (string-append (if (and title? title (not (equal? title
+						    "untitled")))
+				  title
+				  filename-no-extension)
+			      (if (and author? author)
+				 (string-append "--" author) "")
+			      (if (and pages? pages)
+				  (string-append "__" pages) ""))
+	       ;; Remove trailing . and space characters
+	       (char-set #\. #\ )))
+	     ;;extension
+	     extension))))))
 
 (define (media-duration name )
   "Use the ffprobe program to get the duration of the file. NAME is the name argument to ntfw."
