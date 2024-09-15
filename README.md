@@ -24,22 +24,17 @@ Multiple renaming operations:
 
 ## Manual
 
-For convenience I'm including the configure script (Probably this is
-not the best practice).
-
-To recreate it use the following command (autotools required).
-
-```console
-$ autoreconf -vif
-```
-Then renamer can be installed.
+For convenience I'm including the configure script (this is probably
+not the best practice). To create the configure script autotools is
+required.
 
 ```console
-$ git clone https://github.com/MirkoHernandez/renamer
-$ cd renamer
-$ ./configure
-$ make
-$ sudo make install
+git clone https://github.com/MirkoHernandez/renamer
+cd renamer
+autoreconf -vif
+./configure
+make
+sudo make install
 ```
 
 # Usage
