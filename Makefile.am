@@ -34,3 +34,6 @@ bin_SCRIPTS =		\
 	scripts/.renamer-real
 
 EXTRA_DIST = $(SOURCES) $(NOCOMP_SOURCES)
+
+RENAMER:
+	guile -L  . -c '((@ (renamer renamer ) main) (command-line))' $(ARGS)
