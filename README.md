@@ -137,7 +137,58 @@ $ renamer --duration --quote-rx -A  "The Magic of Property Testing [4bpc8NpNHRc]
 The Magic of Property Testing [4bpc8NpNHRc].webm → The Magic of Property Testing [4bpc8NpNHRc]_00:11:57.webm
 ```
 
-# Rofi integration
+# Integration
+
+For the most part renamer is not meant to be used from the command
+line; here are some examples of different ways to execute the renaming
+operations.
+
+## Desktop Entries
+
+Desktop entries are files that can be created in
+~/.local/share/file-manager/actions, they provide file managers with
+additional context menu actions.
+
+### rename-lwp.desktop
+
+```config
+[Desktop Entry]
+Type=Action
+Name=rename-lwp
+Profiles=rename-lwp;
+
+[X-Action-Profile rename-lwp]
+MimeTypes=*;
+Exec=renamer -wlpA --quote-rx %F
+```
+
+### rename-separator.desktop
+
+```config
+[Desktop Entry]
+Type=Action
+Name=rename-separator
+Profiles=rename-separator;
+
+[X-Action-Profile rename-separator]
+MimeTypes=*;
+Exec=bash -c 'renamer -A --separator $(rofi -dmenu -p "After the text:") --quote-rx %F'
+```
+
+### rename-pdf.desktop
+
+```config
+[Desktop Entry]
+Type=Action
+Name=rename-pdf
+Profiles=rename-pdf;
+
+[X-Action-Profile rename-pdf]
+MimeTypes=text/*;application/*;
+Exec=renamer -A --pdf  --quote-rx %f
+```
+
+## Rofi integration
 
 The following script uses rofi (or fzf using the 'fzf' argument) to select files and renaming
 operations.
