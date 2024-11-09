@@ -64,6 +64,7 @@ Text Operations:
 	    --remove-text         remove text.
 	-w  --whitespace          replace whitespace with the '-' character.
 	-p  --remove-punctuation  remove punctuation characters.
+	    --separator           Include separator before specified text.
 
 External Program Operations:
 	    --pdf                 rename using pdftk or stapler (by default the metadata's title).

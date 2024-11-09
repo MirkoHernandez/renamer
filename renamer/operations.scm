@@ -170,18 +170,38 @@ remove-text field must have the pattern used to remove text."
  "Lowercase FILENAME." 
   (string-downcase (basename filename)))
 
+(define (separator name options)
+  "Add  a separator to NAME.  OPTIONS is  the  command line  options,
+the separator is inserted  before the text indicated  by the add-separator
+field." 
+  (let* ((filename (basename name))
+	 (text (option-ref options 'separator #f))
+	 (filename-no-extension (get-filename-without-extension filename))
+	 (extension (get-extension filename)))
+    (string-append
+     (regexp-substitute #f
+			(regexp-exec 
+			 (make-regexp (or text ""))
+			 filename-no-extension)
+			'pre  (string-append "__" (or text "")) 'post)
+     extension)))
+
 ;; NOTE: List of operations to be used  with compose . This is why the
 ;; list is reversed; operations that appear on top are executed first.
 ;; the number of operations determine the arity of the procedure.
 (define %operations-alist
   (reverse!
    `(
+     ;; Add or remove text
      (duration ,media-duration)
      (pdf ,rename-pdf options)
      (remove-text  ,remove-text options )
+     (separator  ,separator options)
      (remove-punctuation  ,remove-punctuation)
+     ;; Transform text. 
      (whitespace  ,replace-spaces)
      (lowercase  ,lowercase)
+     ;; Add or remove text based on file properties.
      (datestamp ,make-datestamp-operation stat options)
      (month     ,make-datestamp-operation stat options )
      (compact   ,make-datestamp-operation stat options)

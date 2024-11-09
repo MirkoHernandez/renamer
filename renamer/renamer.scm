@@ -49,6 +49,7 @@ Renamer runs in dry run mode,  use -A to apply changes.
     -w, --whitespace          replace whitespace with the '-' character.
     -l, --lowercase           lowercase the file name. 
     -p, --remove-punctuation  remove punctuation characters.
+        --separator           Include separator before specified text.
  External Program Operations:
         --pdf                 rename using pdftk (the metadata's title).
         --title               option to add title.
@@ -85,6 +86,7 @@ Renamer runs in dry run mode,  use -A to apply changes.
    ;; rename operation
     (lowercase (single-char #\l))
     (remove-text  (value #t))
+    (separator  (value #t))
     (remove-punctuation (single-char #\p))
     (whitespace  (single-char #\w) )
    ;; options
@@ -195,5 +197,3 @@ Display a help message if no files  argument is provided."
 		   (file (list (basename filepattern))))
 	       (rename-files options dir file)))
 	   files))))))
-
-
